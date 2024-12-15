@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class BaseModel(models.Model):
+class PublishedModel(models.Model):
     """
     Абстрактная модель, применяемая в моделях приложения blog.
 

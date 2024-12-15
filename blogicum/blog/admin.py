@@ -6,6 +6,7 @@ from .models import Category, Location, Post
 admin.site.empty_value_display = 'Не задано'
 
 
+@admin.register(Post)
 class PostAdmin(admin.ModelAdmin):
     """
     Настраивает отображение и функциональность модели Post в админке.
@@ -57,6 +58,7 @@ class PostAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
 
 
+@admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     """
     Настраивает отображение и функциональность модели Category в админке.
@@ -96,6 +98,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display_links = ('title',)
 
 
+@admin.register(Location)
 class LocationAdmin(admin.ModelAdmin):
     """
     Настраивает отображение и функциональность модели Location в админке.
@@ -133,7 +136,3 @@ class LocationAdmin(admin.ModelAdmin):
     )
     list_display_links = ('name',)
 
-
-admin.site.register(Category, CategoryAdmin)
-admin.site.register(Location, LocationAdmin)
-admin.site.register(Post, PostAdmin)

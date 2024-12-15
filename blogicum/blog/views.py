@@ -2,9 +2,8 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404, render
 from django.utils import timezone
 
+from blog.constants import POSTS_LIMIT
 from blog.models import Category, Post
-
-now = timezone.now()
 
 
 def index(request):
@@ -18,6 +17,7 @@ def index(request):
     -категория поста опубликована
     """
     template_name = 'blog/index.html'
+    now = timezone.now()
     posts = (
         Post.objects
         .filter(
@@ -25,7 +25,7 @@ def index(request):
             is_published=True,
             category__is_published=True
         )
-        .order_by('-pub_date')[:5]
+        .order_by('-pub_date')[:POSTS_LIMIT]
     )
     context = {'posts': posts}
     return render(request, template_name, context)
@@ -40,6 +40,7 @@ def post_detail(request, post_id):
     'blog/detail.html' -- шаблон рендеринга
     """
     template_name = 'blog/detail.html'
+    now = timezone.now()
     post = get_object_or_404(
         Post.objects.filter(
             pub_date__lte=now,
@@ -64,6 +65,7 @@ def category_posts(request, category_slug):
     -Идентификатор категории соответсвует принимаему category_slug
     """
     template_name = 'blog/category.html'
+    now = timezone.now()
     category = (
         Category.objects
         .filter(

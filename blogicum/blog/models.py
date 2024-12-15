@@ -1,13 +1,13 @@
 from django.contrib.auth import get_user_model
 from django.db import models
 
-from abstract.models import BaseModel
+from abstract.models import PublishedModel
 
 
 User = get_user_model()
 
 
-class Category(BaseModel):
+class Category(PublishedModel):
     """
     Модель представляет категорию, использующуюся для группировки объектов.
 
@@ -39,17 +39,10 @@ class Category(BaseModel):
     slug = models.SlugField(
         unique=True,
         verbose_name='Идентификатор',
-        help_text='Идентификатор страницы для URL; разрешены символы '
-                  'латиницы, цифры, дефис и подчёркивание.'
-    )
-
-    title = models.CharField(max_length=256, verbose_name='Заголовок')
-    description = models.TextField(verbose_name='Описание')
-    slug = models.SlugField(
-        unique=True,
-        verbose_name='Идентификатор',
-        help_text='Идентификатор страницы для URL; разрешены символы '
-        'латиницы, цифры, дефис и подчёркивание.'
+        help_text=(
+            'Идентификатор страницы для URL; '
+            'разрешены символы латиницы, цифры, дефис и подчёркивание.'
+        ),
     )
 
     class Meta:
@@ -57,10 +50,12 @@ class Category(BaseModel):
         verbose_name_plural = 'Категории'
 
     def __str__(self):
+        if len(self.title) > 20:
+            return self.title[:20] + '...'
         return self.title
 
 
-class Location(BaseModel):
+class Location(PublishedModel):
     """
     Модель представляет местоположение, используемое в системе.
 
@@ -86,10 +81,12 @@ class Location(BaseModel):
         verbose_name_plural = 'Местоположения'
 
     def __str__(self):
+        if len(self.name) > 20:
+            return self.name[:20] + '...'
         return self.name
 
 
-class Post(BaseModel):
+class Post(PublishedModel):
     """
     Модель представляет публикацию в системе.
 
@@ -120,8 +117,10 @@ class Post(BaseModel):
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateTimeField(
         verbose_name='Дата и время публикации',
-        help_text='Если установить дату и время в будущем — можно '
-        'делать отложенные публикации.'
+        help_text=(
+            'Если установить дату и время в будущем — можно '
+            'делать отложенные публикации.'
+        )
     )
     author = models.ForeignKey(
         User,
@@ -147,4 +146,6 @@ class Post(BaseModel):
         verbose_name_plural = 'Публикации'
 
     def __str__(self):
+        if len(self.title) > 20:
+            return self.title[:20] + '...'
         return self.title
