@@ -125,6 +125,7 @@ class Post(PublishedModel):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
+        related_name='author_posts',
         verbose_name='Автор публикации'
     )
     location = models.ForeignKey(
@@ -144,6 +145,8 @@ class Post(PublishedModel):
     class Meta:
         verbose_name = 'публикация'
         verbose_name_plural = 'Публикации'
+        ordering = ['-pub_date']
+        default_related_name = '%(class)s'
 
     def __str__(self):
         if len(self.title) > 20:

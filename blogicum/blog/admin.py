@@ -39,13 +39,10 @@ class PostAdmin(admin.ModelAdmin):
         'category',
     )
     search_fields = (
-        'title',
-        'category',
-        'location',
-        'is_published',
-        'author',
-        'pub_date',
-        'created_at',
+        '^title',
+        '^category__title',
+        '^location__name',
+        '^author__username',
     )
     list_filter = (
         'is_published',
@@ -86,9 +83,8 @@ class CategoryAdmin(admin.ModelAdmin):
         'is_published',
     )
     search_fields = (
-        'title',
-        'is_published',
-        'created_at',
+        '^title',
+        '^slug',
     )
     list_filter = (
         'title',
@@ -125,9 +121,7 @@ class LocationAdmin(admin.ModelAdmin):
         'is_published',
     )
     search_fields = (
-        'name',
-        'is_published',
-        'created_at',
+        '^name',
     )
     list_filter = (
         'name',
@@ -135,4 +129,3 @@ class LocationAdmin(admin.ModelAdmin):
         'created_at',
     )
     list_display_links = ('name',)
-
