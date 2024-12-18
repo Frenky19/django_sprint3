@@ -53,7 +53,7 @@ class Category(PublishedModel):
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        return Truncator(self.name).words(LIMIT_OF_SYMBOLS)
+        return Truncator(self.title).words(LIMIT_OF_SYMBOLS)
 
 
 class Location(PublishedModel):
@@ -147,4 +147,4 @@ class Post(PublishedModel):
         default_related_name = '%(class)s'
 
     def __str__(self):
-        return Truncator(self.name).words(LIMIT_OF_SYMBOLS)
+        return Truncator(self.title).words(LIMIT_OF_SYMBOLS)
