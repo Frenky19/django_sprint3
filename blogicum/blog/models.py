@@ -1,7 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.utils.text import Truncator
+
 
 from abstract.models import PublishedModel
+from blog.constants import LIMIT_OF_SYMBOLS
 
 
 User = get_user_model()
@@ -50,9 +53,7 @@ class Category(PublishedModel):
         verbose_name_plural = 'Категории'
 
     def __str__(self):
-        if len(self.title) > 20:
-            return self.title[:20] + '...'
-        return self.title
+        return Truncator(self.name).words(LIMIT_OF_SYMBOLS)
 
 
 class Location(PublishedModel):
@@ -81,9 +82,7 @@ class Location(PublishedModel):
         verbose_name_plural = 'Местоположения'
 
     def __str__(self):
-        if len(self.name) > 20:
-            return self.name[:20] + '...'
-        return self.name
+        return Truncator(self.name).words(LIMIT_OF_SYMBOLS)
 
 
 class Post(PublishedModel):
@@ -125,7 +124,6 @@ class Post(PublishedModel):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='author_posts',
         verbose_name='Автор публикации'
     )
     location = models.ForeignKey(
@@ -149,6 +147,4 @@ class Post(PublishedModel):
         default_related_name = '%(class)s'
 
     def __str__(self):
-        if len(self.title) > 20:
-            return self.title[:20] + '...'
-        return self.title
+        return Truncator(self.name).words(LIMIT_OF_SYMBOLS)

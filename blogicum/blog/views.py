@@ -14,10 +14,17 @@ def get_filtered_posts():
     - Категория поста опубликована
     """
     now = timezone.now()
-    return Post.objects.select_related('category', 'location').filter(
-        pub_date__lte=now,
-        is_published=True,
-        category__is_published=True
+    return (
+        Post.objects
+        .select_related(
+            'category',
+            'location',
+            'author'
+        ).filter(
+            pub_date__lte=now,
+            is_published=True,
+            category__is_published=True
+        )
     )
 
 
@@ -27,10 +34,9 @@ def index(request):
 
     'blog/index.html' -- шаблон рендеринга
     """
-    template_name = 'blog/index.html'
     posts = get_filtered_posts()[:POSTS_LIMIT]
     context = {'posts': posts}
-    return render(request, template_name, context)
+    return render(request, 'blog/index.html', context)
 
 
 def post_detail(request, post_id):
@@ -41,10 +47,9 @@ def post_detail(request, post_id):
     post_id: int -- идентификационный номер('id') поста
     'blog/detail.html' -- шаблон рендеринга
     """
-    template_name = 'blog/detail.html'
     post = get_object_or_404(get_filtered_posts(), id=post_id)
     context = {'post': post}
-    return render(request, template_name, context)
+    return render(request, 'blog/detail.html', context)
 
 
 def category_posts(request, category_slug):
@@ -56,7 +61,6 @@ def category_posts(request, category_slug):
     category_slug: slug -- идентификатор категории
     'blog/category.html' -- шаблон рендеринга
     """
-    template_name = 'blog/category.html'
     category = get_object_or_404(
         Category,
         slug=category_slug,
@@ -70,4 +74,4 @@ def category_posts(request, category_slug):
         'category': category,
         'posts': posts,
     }
-    return render(request, template_name, context)
+    return render(request, 'blog/category.html', context)
